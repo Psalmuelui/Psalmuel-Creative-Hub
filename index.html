@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psalmuel — AI Creative Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F4EF;
+    --paper-dim:#EFEBE2;
+    --ink:#1B1A17;
+    --ink-soft:#5B584F;
+    --flash:#E8447C;
+    --teal:#1F5C56;
+    --line: rgba(27,26,23,0.12);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    line-height:1.08;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  img{max-width:100%; display:block;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,239,0.88);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:76px;
+  }
+  .brand{font-family:'Fraunces', serif; font-size:20px; font-weight:600;}
+  .brand span{color:var(--flash);}
+  .navlinks{display:flex; gap:36px; font-size:14px;}
+  .navlinks a{color:var(--ink-soft); transition:color .2s;}
+  .navlinks a:hover{color:var(--ink);}
+  .nav-cta{
+    background:var(--ink); color:var(--paper);
+    padding:10px 20px; border-radius:2px; font-size:14px;
+  }
+  .menu-btn{display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer;}
+  .menu-btn span{width:22px; height:2px; background:var(--ink);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:96px 0 72px;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:56px;
+    align-items:end;
+  }
+  .hero h1{
+    font-size:clamp(40px, 5.4vw, 74px);
+    max-width:12ch;
+  }
+  .hero .lede{
+    margin-top:28px;
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:42ch;
+  }
+  .hero-actions{margin-top:36px; display:flex; gap:16px; flex-wrap:wrap;}
+  .btn{
+    display:inline-block; padding:14px 26px; font-size:14px; font-weight:500;
+    border-radius:2px; transition:transform .15s ease, background .15s ease;
+  }
+  .btn-primary{background:var(--flash); color:#fff;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--line); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .hero-tile{
+    aspect-ratio:1/1.1;
+    border-radius:2px;
+    display:flex; align-items:flex-end; padding:14px;
+    font-size:12px; color:rgba(255,255,255,0.85);
+    background-size:cover; background-position:center;
+  }
+  .hero-tile.a{background:linear-gradient(160deg,#2b2b2b,#111); grid-row: span 2;}
+  .hero-tile.b{background:linear-gradient(160deg,var(--teal),#0d302c);}
+  .hero-tile.c{background:linear-gradient(160deg,var(--flash),#9c2455);}
+
+  /* ---------- STRIP ---------- */
+  .strip{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:22px 0;
+    overflow:hidden;
+  }
+  .strip .wrap{
+    display:flex; gap:48px; font-size:13px; color:var(--ink-soft);
+    justify-content:space-between; flex-wrap:wrap;
+  }
+
+  /* ---------- SECTION HEADS ---------- */
+  section{padding:96px 0;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:24px; margin-bottom:48px; flex-wrap:wrap;
+  }
+  .section-head h2{font-size:clamp(30px, 3.6vw, 44px);}
+  .section-head p{color:var(--ink-soft); max-width:34ch; font-size:15px;}
+
+  /* ---------- SERVICES ---------- */
+  .services{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .service{
+    background:var(--paper); padding:40px;
+  }
+  .service .num{font-family:'Fraunces', serif; font-size:14px; color:var(--flash); margin-bottom:18px;}
+  .service h3{font-size:23px; margin-bottom:12px;}
+  .service p{color:var(--ink-soft); font-size:15px; max-width:44ch;}
+
+  /* ---------- GALLERY ---------- */
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:14px;
+  }
+  .gallery-item{
+    aspect-ratio:4/5;
+    border-radius:2px;
+    position:relative;
+    overflow:hidden;
+    background:var(--paper-dim);
+    border:1px dashed var(--line);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:8px; text-align:center; padding:20px;
+  }
+  .gallery-item span.tag{
+    font-size:12px; color:var(--ink-soft);
+  }
+  .gallery-item strong{font-family:'Fraunces', serif; font-weight:500; font-size:16px;}
+  .gallery-item:nth-child(1){grid-column: span 2;}
+  .gallery-note{
+    margin-top:20px; font-size:13px; color:var(--ink-soft);
+  }
+
+  /* ---------- PROCESS ---------- */
+  .process{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:32px;
+  }
+  .step{border-top:2px solid var(--ink); padding-top:18px;}
+  .step .n{font-family:'Fraunces', serif; font-size:28px; color:var(--flash);}
+  .step h3{font-size:18px; margin:10px 0 8px;}
+  .step p{font-size:14px; color:var(--ink-soft);}
+
+  /* ---------- PACKAGES ---------- */
+  .packages{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+  }
+  .package{
+    border:1px solid var(--line); border-radius:2px; padding:36px 28px;
+    background:var(--paper); display:flex; flex-direction:column;
+  }
+  .package.featured{
+    background:var(--ink); color:var(--paper); border-color:var(--ink);
+  }
+  .package.featured .package-name, .package.featured .price{color:var(--paper);}
+  .package.featured .feat{color:rgba(246,244,239,0.75);}
+  .package.featured .btn-ghost{border-color:rgba(246,244,239,0.4); color:var(--paper);}
+  .package-name{font-size:13px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); margin-bottom:14px;}
+  .price{font-family:'Fraunces', serif; font-size:34px; margin-bottom:6px;}
+  .price small{font-family:'Inter', sans-serif; font-size:13px; font-weight:400; color:var(--ink-soft);}
+  .package p.desc{font-size:14px; color:var(--ink-soft); margin-bottom:24px;}
+  .package.featured p.desc{color:rgba(246,244,239,0.75);}
+  ul.feat{list-style:none; margin-bottom:32px; flex-grow:1;}
+  ul.feat li{
+    font-size:14px; padding:10px 0; border-top:1px solid var(--line);
+  }
+  .package.featured ul.feat li{border-top-color:rgba(246,244,239,0.15);}
+
+  /* ---------- TESTIMONIAL ---------- */
+  .testimonial{
+    background:var(--paper-dim);
+    padding:64px 48px;
+    border-radius:2px;
+  }
+  .testimonial blockquote{
+    font-family:'Fraunces', serif;
+    font-size:clamp(22px,2.6vw,30px);
+    max-width:26ch;
+    margin-bottom:24px;
+  }
+  .testimonial cite{font-style:normal; font-size:14px; color:var(--ink-soft);}
+
+  /* ---------- CONTACT ---------- */
+  .contact{
+    display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start;
+  }
+  .contact h2{font-size:clamp(30px,4vw,46px); margin-bottom:20px;}
+  .contact p{color:var(--ink-soft); max-width:38ch; margin-bottom:28px;}
+  .contact-links{display:flex; flex-direction:column; gap:14px;}
+  .contact-links a{
+    font-size:16px; padding-bottom:10px; border-bottom:1px solid var(--line);
+    display:flex; justify-content:space-between;
+  }
+  form{display:flex; flex-direction:column; gap:16px;}
+  input, textarea{
+    background:transparent; border:none; border-bottom:1px solid var(--line);
+    padding:12px 0; font-family:'Inter'; font-size:15px; color:var(--ink); outline:none;
+  }
+  input:focus, textarea:focus{border-bottom-color:var(--ink);}
+  textarea{resize:vertical; min-height:90px;}
+  form .btn{align-self:flex-start; border:none; cursor:pointer;}
+
+  footer{
+    border-top:1px solid var(--line); padding:32px 0;
+    display:flex; justify-content:space-between; font-size:13px; color:var(--ink-soft);
+    flex-wrap:wrap; gap:12px;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .navlinks{display:none;}
+    .menu-btn{display:flex;}
+    .hero{grid-template-columns:1fr; gap:40px; padding-top:56px;}
+    .services{grid-template-columns:1fr;}
+    .gallery{grid-template-columns:1fr 1fr;}
+    .gallery-item:nth-child(1){grid-column:span 2;}
+    .process{grid-template-columns:1fr 1fr; gap:28px;}
+    .packages{grid-template-columns:1fr;}
+    .contact{grid-template-columns:1fr;}
+    section{padding:64px 0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="#top">Psalmuel<span>.</span></a>
+    <div class="navlinks">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#packages">Packages</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="nav-cta" href="#contact">Start a project</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero wrap" style="padding-bottom:0;">
+    <div>
+      <h1>Product photos your camera never took.</h1>
+      <p class="lede">I generate, retouch, and produce studio-grade AI imagery for brands who need photoshoots, product ad creative, and campaign visuals — without the studio, the crew, or the wait.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#packages">See packages</a>
+        <a class="btn btn-ghost" href="#work">View the work</a>
+      </div>
+    </div>
+    <div class="hero-grid">
+      <div class="hero-tile a">AI photoshoot — replace this tile with your strongest image</div>
+      <div class="hero-tile b">Product ad creative</div>
+      <div class="hero-tile c">Before / after edit</div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap">
+      <span>AI image generation</span>
+      <span>Virtual photoshoots</span>
+      <span>Photo &amp; product editing</span>
+      <span>Ad creative for e‑commerce</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services" class="wrap">
+    <div class="section-head">
+      <h2>What I do</h2>
+      <p>Four services, one goal: imagery that sells, without a physical shoot.</p>
+    </div>
+    <div class="services">
+      <div class="service">
+        <div class="num">01</div>
+        <h3>AI image generation</h3>
+        <p>Original, on-brand visuals generated from a brief — for campaigns, social content, or concepts you couldn't otherwise photograph.</p>
+      </div>
+      <div class="service">
+        <div class="num">02</div>
+        <h3>Virtual photoshoots</h3>
+        <p>A full "shoot" without a camera, model, or studio — placing your product or a generated model in real-feeling scenes and lighting.</p>
+      </div>
+      <div class="service">
+        <div class="num">03</div>
+        <h3>Photo &amp; product editing</h3>
+        <p>Heavy retouching, background replacement, and realism correction that takes a rough shot to something client-ready.</p>
+      </div>
+      <div class="service">
+        <div class="num">04</div>
+        <h3>Ad creative for e‑commerce</h3>
+        <p>Scroll-stopping product ad visuals sized and styled for Instagram, Meta, and marketplace listings.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK / GALLERY -->
+  <section id="work" class="wrap">
+    <div class="section-head">
+      <h2>Selected work</h2>
+      <p>A sample of recent generations, edits, and campaign creative.</p>
+    </div>
+    <div class="gallery">
+      <div class="gallery-item"><strong>Featured piece</strong><span class="tag">Swap for your best before/after or hero image</span></div>
+      <div class="gallery-item"><strong>Photoshoot</strong><span class="tag">Add project title</span></div>
+      <div class="gallery-item"><strong>Ad creative</strong><span class="tag">Add project title</span></div>
+      <div class="gallery-item"><strong>Edit</strong><span class="tag">Add project title</span></div>
+      <div class="gallery-item"><strong>Generation</strong><span class="tag">Add project title</span></div>
+    </div>
+    <p class="gallery-note">Each tile is a placeholder — replace the background with your own image (see the comment in the code where it says "REPLACE GALLERY IMAGE").</p>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process" class="wrap">
+    <div class="section-head">
+      <h2>How a project runs</h2>
+      <p>From brief to delivered files, usually within days.</p>
+    </div>
+    <div class="process">
+      <div class="step">
+        <div class="n">01</div>
+        <h3>Brief</h3>
+        <p>You share the product, brand references, and the platforms the creative is for.</p>
+      </div>
+      <div class="step">
+        <div class="n">02</div>
+        <h3>Concept</h3>
+        <p>I propose scenes, styles, and a shot list before generating anything final.</p>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <h3>Generate &amp; edit</h3>
+        <p>Production and retouching, with a check-in on early drafts.</p>
+      </div>
+      <div class="step">
+        <div class="n">04</div>
+        <h3>Deliver</h3>
+        <p>Final files, sized for your platforms, plus source layers on request.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section id="packages" class="wrap">
+    <div class="section-head">
+      <h2>Packages</h2>
+      <p>Starting points — every project is scoped to the brief.</p>
+    </div>
+    <div class="packages">
+      <div class="package">
+        <div class="package-name">Starter</div>
+        <div class="price">[Add price] <small>/ project</small></div>
+        <p class="desc">For a single product or a small content batch.</p>
+        <ul class="feat">
+          <li>[X] final images</li>
+          <li>1 style / scene concept</li>
+          <li>1 round of revisions</li>
+          <li>Sized for 1 platform</li>
+        </ul>
+        <a class="btn btn-ghost" href="#contact">Get started</a>
+      </div>
+      <div class="package featured">
+        <div class="package-name">Growth</div>
+        <div class="price">[Add price] <small>/ project</small></div>
+        <p class="desc">For a product line or an ongoing content need.</p>
+        <ul class="feat">
+          <li>[X] final images</li>
+          <li>2–3 style / scene concepts</li>
+          <li>2 rounds of revisions</li>
+          <li>Sized for 2–3 platforms</li>
+        </ul>
+        <a class="btn btn-primary" href="#contact">Get started</a>
+      </div>
+      <div class="package">
+        <div class="package-name">Pro</div>
+        <div class="price">[Add price] <small>/ project</small></div>
+        <p class="desc">For a full campaign or a recurring monthly retainer.</p>
+        <ul class="feat">
+          <li>[X] final images</li>
+          <li>Custom concept development</li>
+          <li>Unlimited revisions (scoped)</li>
+          <li>All platform sizes + source files</li>
+        </ul>
+        <a class="btn btn-ghost" href="#contact">Get started</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="wrap">
+    <div class="testimonial">
+      <blockquote>"Add a client quote here once you have one — a specific result works better than general praise."</blockquote>
+      <cite>Client name, Company</cite>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="wrap">
+    <div class="contact">
+      <div>
+        <h2>Let's make your next shoot.</h2>
+        <p>Tell me about your product and what the images are for — I'll reply with a concept and a quote.</p>
+        <div class="contact-links">
+          <a href="mailto:youremail@example.com">Email <span>youremail@example.com</span></a>
+          <a href="https://instagram.com/yourhandle" target="_blank" rel="noopener">Instagram <span>@yourhandle</span></a>
+          <a href="https://wa.me/000000000000" target="_blank" rel="noopener">WhatsApp <span>Message directly</span></a>
+        </div>
+      </div>
+      <form onsubmit="event.preventDefault(); alert('This form is a template — connect it to Formspree, or just link your email/WhatsApp above until it is wired up.');">
+        <input type="text" placeholder="Your name" required>
+        <input type="email" placeholder="Your email" required>
+        <textarea placeholder="What are you looking to create?" required></textarea>
+        <button class="btn btn-primary" type="submit">Send brief</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <span>© <span id="year"></span> Psalmuel — AI Creative Studio</span>
+  <span>Built with generated imagery, real craft.</span>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
