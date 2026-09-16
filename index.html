@@ -92,12 +92,13 @@
     grid-template-columns:1fr 1fr;
     gap:12px;
   }
-  .hero-tile{
-    aspect-ratio:1/1.1;
+   .hero-tile{
     border-radius:2px;
-    display:flex; align-items:flex-end; padding:14px;
-    font-size:12px; color:rgba(255,255,255,0.85);
-    background-size:cover; background-position:center;
+    overflow:hidden;
+    position:relative;
+  }
+  .hero-tile img{
+    width:100%; height:100%; display:block; object-fit:cover;
   }
   .hero-tile.a{background:linear-gradient(160deg,#2b2b2b,#111); grid-row: span 2;}
   .hero-tile.b{background:linear-gradient(160deg,var(--teal),#0d302c);}
@@ -286,9 +287,10 @@
       </div>
     </div>
     <div class="hero-grid">
-      <div class="hero-tile a" style="background-image:url('hero-1.jpeg');background-size:contain;background-repeat:no-repeat;background-color:#1B1A17;">AI photoshoot</div>
-      <div class="hero-tile b" style="background-image:url('hero-2.jpeg');background-size:contain;background-repeat:no-repeat;background-color:#1B1A17;">Product ad creative</div>
-      <div class="hero-tile c" style="background-image:url('hero-3.png');background-size:contain;background-repeat:no-repeat;background-color:#1B1A17;">Before / after edit</div>
+      <div class="hero-tile a"><img src="hero-1.jpg" alt="AI photoshoot"></div>
+      <div class="hero-tile b"><img src="hero-2.jpg" alt="Product ad creative"></div>
+      <div class="hero-tile c"><img src="hero-3.jpg" alt="Before / after edit"></div>
+
     </div>
   </section>
 
